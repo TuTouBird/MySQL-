@@ -1,0 +1,96 @@
+-- 实验五
+#1.1
+create user 'David'@'localhost' identified by '123456';
+create user 'Tom'@'localhost' identified by '123456';
+create user 'Jerry'@'localhost' identified by '123456';
+grant create user,create role on *.* to 'David'@'localhost';
+grant create user,create role on *.* to 'Tom'@'localhost';
+grant create user,create role on *.* to 'Jerry'@'localhost';
+#1.2
+create user 'Marry'@'localhost' identified by '123456';
+create user 'Jack'@'localhost' identified by '123456';
+create user 'Mike'@'localhost' identified by '123456';
+#2.1
+create role 'select_1'@'localhost';
+grant select on project1.part to 'select_1'@'localhost';
+grant select on project1.supplier to 'select_1'@'localhost';
+grant select on project1.part_supplier to 'select_1'@'localhost';
+
+create role 'select_2'@'localhost';
+grant select on project1.orders to 'select_2'@'localhost';
+grant select on project1.line_item to 'select_2'@'localhost';
+
+create role 'select_3'@'localhost';
+grant select on project1.customer to 'select_3'@'localhost';
+grant select on project1.nation to 'select_3'@'localhost';
+grant select on project1.region to 'select_3'@'localhost';
+#2.2
+create role 'select_insert_1'@'localhost';
+grant select,insert on project1.part to 'select_insert_1'@'localhost';
+grant select,insert on project1.supplier to 'select_insert_1'@'localhost';
+grant select,insert on project1.part_supplier to 'select_insert_1'@'localhost';
+
+create role 'select_insert_2'@'localhost';
+grant select,insert on project1.orders to 'select_insert_2'@'localhost';
+grant select,insert on project1.line_item to 'select_insert_2'@'localhost';
+
+create role 'select_insert_3'@'localhost';
+grant select,insert on project1.customer to 'select_insert_3'@'localhost';
+grant select,insert on project1.nation to 'select_insert_3'@'localhost';
+grant select,insert on project1.region to 'select_insert_3'@'localhost';
+#2.3
+create role 'manager_1'@'localhost';
+grant all on project1.part to 'manager_1'@'localhost' with grant option ;
+grant all on project1.supplier to 'manager_1'@'localhost' with grant option ;
+grant all on project1.part_supplier to 'manager_1'@'localhost' with grant option ;
+grant select on project1.orders to 'manager_1'@'localhost';
+grant select on project1.line_item to 'manager_1'@'localhost';
+grant select on project1.customer to 'manager_1'@'localhost';
+grant select on project1.nation to 'manager_1'@'localhost';
+grant select on project1.region to 'manager_1'@'localhost';
+
+create role 'manager_2'@'localhost';
+grant all on project1.orders to 'manager_2'@'localhost' with grant option ;
+grant all on project1.line_item to 'manager_2'@'localhost' with grant option ;
+grant select on project1.part to 'manager_2'@'localhost';
+grant select on project1.supplier to 'manager_2'@'localhost';
+grant select on project1.part_supplier to 'manager_2'@'localhost';
+grant select on project1.customer to 'manager_2'@'localhost';
+grant select on project1.nation to 'manager_2'@'localhost';
+grant select on project1.region to 'manager_2'@'localhost';
+
+create role 'manager_3'@'localhost';
+grant all on project1.customer to 'manager_3'@'localhost' with grant option ;
+grant all on project1.nation to 'manager_3'@'localhost' with grant option ;
+grant all on project1.region to 'manager_3'@'localhost' with grant option ;
+grant select on project1.part to 'manager_3'@'localhost';
+grant select on project1.supplier to 'manager_3'@'localhost';
+grant select on project1.part_supplier to 'manager_3'@'localhost';
+grant select on project1.orders to 'manager_3'@'localhost';
+grant select on project1.line_item to 'manager_3'@'localhost';
+#3.1
+grant 'manager_1'@'localhost' to 'David'@'localhost';
+grant 'manager_2'@'localhost' to 'Tom'@'localhost';
+grant 'manager_3'@'localhost' to 'Jerry'@'localhost';
+#3.2
+grant 'select_insert_1'@'localhost' to 'Marry'@'localhost';
+grant 'select_insert_2'@'localhost' to 'Jack'@'localhost';
+grant 'select_insert_3'@'localhost' to 'Mike'@'localhost';
+#4.1
+revoke select on project1.customer from 'manager_3'@'localhost';
+revoke select on project1.nation from 'manager_3'@'localhost';
+revoke select on project1.region from 'manager_3'@'localhost';
+#4.2
+revoke all on project1.customer from 'select_insert_3'@'localhost';
+revoke all on project1.nation from 'select_insert_3'@'localhost';
+revoke all on project1.region from 'select_insert_3'@'localhost';
+#5.1
+#先激活权限
+-- set default role all to 'David'@'localhost';
+-- set default role all to 'Tom'@'localhost';
+-- set default role all to 'Jerry'@'localhost';
+-- set default role all to 'Marry'@'localhost';
+-- set default role all to 'Jack'@'localhost';
+-- set default role all to 'Mike'@'localhost';
+
+-- mysql -u David -p 123456
