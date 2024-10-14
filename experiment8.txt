@@ -1,0 +1,64 @@
+-- 实验八
+#(1)
+create trigger trigger1
+after update
+on line_item for each row
+begin
+    update orders o set o.total_price = (select sum(extended_price*(1+tax)*(1-discount)) from line_item l where new.order_key=o.order_key);
+end;
+
+#(2)
+create trigger trigger2
+after insert
+on line_item for each row
+begin
+    update orders o set o.total_price = o.total_price + (new.extended_price*(1+new.tax)*(1-new.discount));
+end;
+
+#(3)
+create trigger trigger3
+after delete
+on line_item for each row
+begin
+    update orders o set o.total_price = o.total_price - (old.extended_price*(1+old.tax)*(1-old.discount));
+end;
+
+#(4)
+create trigger trigger4
+before update
+on line_item for each row
+begin
+    declare available_count int;
+    declare message varchar(10);
+    set message := 'not enough';
+    select available_quantity into available_count from part_supplier where part_key = new.part_key and supplier_key = new.supplier_key;
+    if old.quantity + available_count > new.quantity then
+        update part_supplier set available_quantity = available_quantity - (new.quantity-old.quantity) where part_key = new.part_key and supplier_key = new.supplier_key;
+    else
+        select message;
+    end if;
+end;
+
+#(5)
+create trigger trigger5
+before insert
+on line_item for each row
+begin
+    declare available_count int;
+    declare message varchar(10);
+    set message := 'not enough';
+    select available_quantity into available_count from part_supplier where part_key = new.part_key and supplier_key = new.supplier_key;
+    if new.quantity<available_count then
+        update part_supplier set available_quantity = available_quantity - new.quantity where part_key = new.part_key and supplier_key = new.supplier_key;
+    else
+        select message;
+    end if;
+end;
+
+#(6)
+create trigger trigger6
+before delete
+on line_item for each row
+begin
+    update part_supplier set available_quantity = available_quantity + old.quantity where part_key = old.part_key and supplier_key = old.supplier_key;
+end;
