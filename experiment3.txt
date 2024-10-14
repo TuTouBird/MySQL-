@@ -1,0 +1,20 @@
+-- 实验三
+#1
+insert into supplier values (30847,'王光耀公司','河北工业大学',1,'15188924028',0.00,null);
+#2
+create table china_customer as select * from customer where nation_key = (select nation_key from nation where name='中国');
+#3
+create table customer_shopping as select o.customer_key 顾客编号,count(*) 购物总数量,sum(o.total_price) 购物总价 from orders o left outer join customer c on o.customer_key = c.customer_key group by o.customer_key;
+#4
+update part_supplier set supply_cost=supply_cost*0.8 where supplier_key=(select supplier_key from supplier where name = '深圳市鸿运贸易有限公司');
+#5
+update line_item l,part p set l.extended_price=l.quantity*p.retail_price where l.part_key=p.part_key;
+#6
+delete from line_item l where l.order_key in (select order_key from orders o inner join customer c on o.customer_key = c.customer_key where c.name = '童帅' );
+delete from orders o where o.customer_key = (select customer_key from customer where name = '童帅');
+#7
+delete from line_item l where l.supplier_key in (select supplier_key from supplier s where s.nation_key=(select nation_key from nation where name = '澳大利亚') );
+delete from part_supplier ps where ps.supplier_key in (select supplier_key from supplier s where s.nation_key=(select nation_key from nation where name = '澳大利亚') );
+delete from supplier s where s.nation_key = (select nation_key from nation where name = '澳大利亚');
+#8
+delete from customer c where c.customer_key not in (select distinct customer_key from orders);
