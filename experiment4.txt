@@ -1,0 +1,24 @@
+-- 实验四
+#1
+create view view_part1 as select s.supplier_key 供应商编号,s.name 供应商名称,p.part_key 零件编号,p.name 零件名称,ps.available_quantity 可用数量,p.retail_price 零售价格,ps.supply_cost 供应价格 from part p left outer join part_supplier ps on p.part_key = ps.part_key left outer join supplier s on ps.supplier_key = s.supplier_key where s.name='河北省华信集团';
+#2
+create view view_customer1 as select c.customer_key 顾客编号,c.name 姓名,sum(o.total_price) 购买总金额,sum(li.quantity) 购买零件总数量 from orders o left outer join line_item li on o.order_key = li.order_key left outer join customer c on o.customer_key = c.customer_key where year(o.order_date) = 2020 group by o.customer_key ;
+#2.1
+insert into view_customer1 values(666,'wgy',666,666);
+#视图依赖多个基本表，不可插入
+#2.2
+select * from view_customer1 where 购买总金额 > 100000;
+#3
+create view view_part2 as select ps.part_key 零件编号,ps.supplier_key 供应商编号,ps.available_quantity 可用数量,ps.supply_cost 供应价格 from part_supplier ps where ps.supplier_key=(select supplier_key from supplier where name = '河北钢铁集团有限公司');
+insert into view_part2 values(1,24706,100,100);#可以
+delete from view_part2 where 零件编号=1;#可以
+update view_part2 set 可用数量=100 where 零件编号=2206;#可以
+#4
+create view view_part3 as select ps.part_key 零件编号,ps.supplier_key 供应商编号,ps.available_quantity 可用数量,ps.supply_cost 供应价格 from part_supplier ps where ps.supplier_key=(select supplier_key from supplier where name = '河北钢铁集团有限公司') with check option;
+insert into view_part3 values(1,24705,100,100);#不可以，插入数据的供应商编号不满足创建视图时的条件
+delete from view_part3 where 零件编号=1;
+update view_part3 set 可用数量=100 where 零件编号=2206;#可以
+#5
+create view view_customer2 as select o.customer_key,c.name,li.quantity,total_price from orders o left outer join line_item li on o.order_key = li.order_key left outer join customer c on o.customer_key = c.customer_key;
+create view view_customer3 as select vc2.customer_key,vc2.name,avg(quantity),avg(total_price) from view_customer2 vc2 group by vc2.customer_key ;
+drop view view_customer2;
