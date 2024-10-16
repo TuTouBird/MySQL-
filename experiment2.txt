@@ -1,3 +1,4 @@
+使用前请先仔细阅读README
 -- 实验二
 #1
 select region_key 地区编号,name 名称 from region;
