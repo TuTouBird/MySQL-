@@ -1,3 +1,4 @@
+使用前请先仔细阅读README
 -- 实验三
 #1
 insert into supplier values (30847,'王光耀公司','河北工业大学',1,'15188924028',0.00,null);
