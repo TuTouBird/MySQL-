@@ -1,3 +1,4 @@
+使用前请先仔细阅读README
 create table user(
     id int primary key comment '用户ID',
     user_name varchar(10) unique not null comment '用户名',
@@ -112,8 +113,8 @@ select g.* from goods g,type t where g.type_id=t.id and t.type_name='二手图�
 select g.user_id,u.user_name,count(*) 闲置物品数量 from user u,goods g where u.id=g.user_id group by g.user_id order by g.user_id asc;
 -- 4.统计用户购买闲置物品的支出，只显示总支出超过100的用户名、总支出
 select u.user_name,sum(g.price) 总支出 from orders o,user u,goods g where o.user2_id=u.id  and o.goods_id=g.id group by o.user2_id having 总支出>100;
--- 5.统计各年级同学出售闲置物品的数量，降序排列
-select u.grade,count(*) 数量 from user u,goods g where u.id=g.user_id group by u.grade order by 数量 desc;
+-- 5.查询出售闲置物品最多的年级，并统计出售的闲置物品数量
+select u.grade,count(*) 数量 from user u,goods g where u.id=g.user_id group by u.grade order by 数量 desc limit 1;
 
 -- 为user表user_name创建唯一索引
 create unique index idx_user_name on user(user_name);
