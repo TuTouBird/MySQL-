@@ -1,3 +1,4 @@
+使用前请先仔细阅读README
 -- 实验四
 #1
 create view view_part1 as select s.supplier_key 供应商编号,s.name 供应商名称,p.part_key 零件编号,p.name 零件名称,ps.available_quantity 可用数量,p.retail_price 零售价格,ps.supply_cost 供应价格 from part p left outer join part_supplier ps on p.part_key = ps.part_key left outer join supplier s on ps.supplier_key = s.supplier_key where s.name='河北省华信集团';
