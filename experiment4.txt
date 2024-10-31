@@ -20,6 +20,6 @@ insert into view_part3 values(1,24705,100,100);#不可以，插入数据的供�
 delete from view_part3 where 零件编号=1;
 update view_part3 set 可用数量=100 where 零件编号=2206;#可以
 #5
-create view view_customer2 as select o.customer_key,c.name,li.quantity,total_price from orders o left outer join line_item li on o.order_key = li.order_key left outer join customer c on o.customer_key = c.customer_key;
-create view view_customer3 as select vc2.customer_key,vc2.name,avg(quantity),avg(total_price) from view_customer2 vc2 group by vc2.customer_key ;
+create view view_customer2 as select o.customer_key,c.name,li.quantity,li.extended_price from line_item li left outer join orders o on o.order_key = li.order_key left outer join customer c on o.customer_key = c.customer_key;
+create view view_customer3 as select vc2.customer_key,vc2.name,avg(quantity),avg(extended_price) from view_customer2 vc2 group by vc2.customer_key ;
 drop view view_customer2;
