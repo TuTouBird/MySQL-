@@ -4,9 +4,9 @@
 create user 'David'@'localhost' identified by '123456';
 create user 'Tom'@'localhost' identified by '123456';
 create user 'Jerry'@'localhost' identified by '123456';
-grant create user,create role on project1.* to 'David'@'localhost';
-grant create user,create role on project1.* to 'Tom'@'localhost';
-grant create user,create role on project1.* to 'Jerry'@'localhost';
+grant create user,create role on *.* to 'David'@'localhost';
+grant create user,create role on *.* to 'Tom'@'localhost';
+grant create user,create role on *.* to 'Jerry'@'localhost';
 #1.2
 create user 'Marry'@'localhost' identified by '123456';
 create user 'Jack'@'localhost' identified by '123456';
@@ -79,12 +79,8 @@ grant 'select_insert_2'@'localhost' to 'Jack'@'localhost';
 grant 'select_insert_3'@'localhost' to 'Mike'@'localhost';
 #4.1
 revoke select on project1.customer from 'manager_3'@'localhost';
-revoke select on project1.nation from 'manager_3'@'localhost';
-revoke select on project1.region from 'manager_3'@'localhost';
 #4.2
-revoke all on project1.customer from 'select_insert_3'@'localhost';
-revoke all on project1.nation from 'select_insert_3'@'localhost';
-revoke all on project1.region from 'select_insert_3'@'localhost';
+revoke 'select_insert_3'@'localhost' from 'Mike'@'localhost';
 #5.1
 #先激活权限
 -- set default role all to 'David'@'localhost';
