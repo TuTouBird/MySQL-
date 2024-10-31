@@ -4,9 +4,9 @@
 create user 'David'@'localhost' identified by '123456';
 create user 'Tom'@'localhost' identified by '123456';
 create user 'Jerry'@'localhost' identified by '123456';
-grant create user,create role on *.* to 'David'@'localhost';
-grant create user,create role on *.* to 'Tom'@'localhost';
-grant create user,create role on *.* to 'Jerry'@'localhost';
+grant create user,create role on wgy.* to 'David'@'localhost';
+grant create user,create role on wgy.* to 'Tom'@'localhost';
+grant create user,create role on wgy.* to 'Jerry'@'localhost';
 #1.2
 create user 'Marry'@'localhost' identified by '123456';
 create user 'Jack'@'localhost' identified by '123456';
