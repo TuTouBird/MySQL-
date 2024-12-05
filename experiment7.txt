@@ -43,13 +43,15 @@ drop procedure if exists proc4;
 create procedure proc5(in o_year int)
 begin
     declare o_key int;
+    declare t_price decimal(10,2);
     declare u_cursor cursor for select order_key from orders where year(order_date) = o_year;
     declare exit handler for not found close u_cursor;
 
     open u_cursor;
     while true do
         fetch u_cursor into o_key;
-        update orders set total_price = (select sum(extended_price * (1-discount) * (1+tax) ) from line_item where orders.order_key = line_item.order_key) where orders.order_key=o_key;
+        select sum(extended_price * (1 - discount) * (1 + tax)) into t_price from line_item where order_key = o_key;
+        update orders set total_price = t_price where order_key = o_key;
         end while;
 end;
 
